@@ -1,17 +1,25 @@
-name: Auto Merge futher -> master on PR approval
+name: Auto Merge PR into master after approval
 
 on:
   pull_request_review:
     types: [submitted]
 
+permissions:
+  contents: write
+  pull-requests: read
+
 jobs:
   merge:
-    if: github.event.review.state == 'approved'
+    if: >
+      github.event.review.state == 'approved' &&
+      github.event.pull_request.base.ref == 'master'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0   # fetch all history for merging
 
       - name: Ensure PR has at least 1 approval
         id: approvals
@@ -21,20 +29,25 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Merge futher into master
+      - name: Debug - show PR info
+        run: |
+          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
+          echo "Head branch: ${{ github.event.pull_request.head.ref }}"
+          git branch -r
+
+      - name: Merge PR branch into master
         if: env.approvals >= 1
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-          # Fetch branches
-          git fetch origin futher
-          git fetch origin master
+          # Fetch all branches
+          git fetch --all
 
           # Checkout master
           git checkout master
           git pull origin master
 
-          # Merge futher -> master
-          git merge origin/futher --no-ff -m "Auto-merge futher into master after approval"
+          # Merge PR branch into master
+          git merge origin/${{ github.event.pull_request.head.ref }} --no-ff -m "Auto-merge ${{ github.event.pull_request.head.ref }} into master after approval"
           git push origin master
