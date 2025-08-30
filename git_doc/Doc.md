@@ -90,15 +90,15 @@
 
 
 ## Create a feature branch
-- git checkout -b feature/my-feature
+- `git checkout -b <branch-name>`
 
 ## Make changes, commit & push
 - git add .
-- git commit -m "Added new feature"
-- git push origin feature/my-feature
+- ``git commit -m "Added new feature"``
+- `git push origin <branch-name>`
 
 ## Create PR
-- gh pr create --base main --head <branch-name> --title "New Feature" --body "This PR adds a new feature"
+- ``gh pr create --base main --head <branch-name> --title "New Feature" --body "This PR adds a new feature"``
 
 ## Add reviewers
-- gh pr edit --add-reviewer alice --add-reviewer bob
+- ``gh pr edit --add-reviewer alice --add-reviewer bob``
