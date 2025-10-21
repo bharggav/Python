@@ -1,7 +1,8 @@
-import sys
-sys.path.append('C:/Users/bharg/Documents/GitHub/Python/Pytest') # Add the parent directory to sys.path  
-#import pytest
+import pytest
 import time
-import learningtest as test1
+from Pytesting.code import learningtest as test1
 print(time.time())
+
+def testadd():
+    assert test1.add(1,2) == 3
 
