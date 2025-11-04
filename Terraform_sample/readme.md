@@ -40,6 +40,7 @@ terraform destroy -var-file="envs/dev.tfvars" -auto-approve
 terraform show
 ```
 
+```
 Main commands:
   init          Prepare your working directory for other commands
   validate      Check whether the configuration is valid
@@ -69,3 +70,4 @@ All other commands:
   untaint       Remove the 'tainted' state from a resource instance
   version       Show the current Terraform version
   workspace     Workspace management
+```
